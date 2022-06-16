@@ -17,7 +17,7 @@ class BookTest extends TestCase
         Book::factory()->create();
 
         // act
-        $response = $this->get('/api/book');
+        $response = $this->get('/api/books');
 
         // assert
         $response->assertStatus(302);
@@ -34,7 +34,7 @@ class BookTest extends TestCase
         ];
 
         // act
-        $response = $this->get('/api/book', $payload);
+        $response = $this->get('/api/books', $payload);
 
         // assert
         $response->assertStatus(201);
@@ -70,7 +70,7 @@ class BookTest extends TestCase
         $book = Book::factory()->create();
 
         // act
-        $response = $this->delete('/api/book/' . $book);
+        $response = $this->delete('/api/books/' . $book);
 
         // assert
         $response->assertStatus(200);
