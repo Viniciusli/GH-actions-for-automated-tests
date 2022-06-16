@@ -50,10 +50,10 @@ class BookTest extends TestCase
             'description' => 'description test',
             'published_at' => '2020-01-01'
         ];
-        Book::factory()->create($payload);
+        $book = Book::factory()->create($payload);
 
         // act
-        $response = $this->put('/book', [
+        $response = $this->put("/book/{$book->id}", [
             'author' => 'author test updated',
         ]);
 
