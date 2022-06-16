@@ -26,51 +26,62 @@ class BookTest extends TestCase
     public function testBookCanBeCreatedForApi(): void
     {
         // prepare
+        $user = User::factory()->create();
         $payload = [
             'title' => 'title test',
             'author' => 'author test',
-            'decription' => 'description test',
-            'published_at' => '2020-01-01'
+            'description' => 'description test',
+            'published_at' => date('Y-m-d', strtotime('-1 year')),
         ];
 
         // act
-        $response = $this->post('/api/books', $payload);
+        $this->post('api/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+        $response = $this->postJson('/api/books', $payload);
 
         // assert
         $response->assertStatus(201);
-        $response->seeInDatabase('books', $payload);
     }
 
     public function testBookCanBeUpdatedForApi(): void
     {
         // prepare
+        $user = User::factory()->create();
         $payload = [
             'title' => 'title test',
             'author' => 'author test',
             'description' => 'description test',
-            'published_at' => '2020-01-01'
+            'published_at' => date('Y-m-d', strtotime('-1 year'))
         ];
         $book = Book::factory()->create($payload);
 
         // act
-        $response = $this->put("/book/{$book->id}", [
-            'author' => 'author test updated',
+        $this->postJson('/api/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+        $response = $this->putJson("/api/books/{$book->id}", [
+            'author' => 'author test updated'
         ]);
 
         // assert
         $response->assertStatus(200);
-        $response->seeInDatabse('books', [
-            'author' => 'author test updated',
-        ]);
     }
 
     public function testUserCanBeDeletedForApi(): void
     {
         // prepare
+        $user = User::factory()->create();
         $book = Book::factory()->create();
 
         // act
-        $response = $this->delete('/api/books/' . $book);
+        $this->post('/api/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+        $response = $this->delete('/api/books/' . $book->id);
 
         // assert
         $response->assertStatus(200);
