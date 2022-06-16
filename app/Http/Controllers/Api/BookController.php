@@ -13,7 +13,7 @@ class BookController extends Controller
 {
     public function index(): JsonResponse
     {
-        $books = Book::all()->paginate(10);
+        // $books = Book::all()->paginate(10);
 
         return response()->json([
             'books' => $books
