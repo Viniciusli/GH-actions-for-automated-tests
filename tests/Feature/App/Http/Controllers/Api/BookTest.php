@@ -34,7 +34,7 @@ class BookTest extends TestCase
         ];
 
         // act
-        $response = $this->get('/api/books', $payload);
+        $response = $this->post('/api/books', $payload);
 
         // assert
         $response->assertStatus(201);
