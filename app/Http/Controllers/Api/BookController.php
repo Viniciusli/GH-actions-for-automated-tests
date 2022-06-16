@@ -13,7 +13,7 @@ class BookController extends Controller
 {
     public function index(): JsonResponse
     {
-        // $books = Book::all()->paginate(10);
+        $books = Book::all()->paginate(10);
 
         return response()->json([
             'books' => $books
@@ -22,12 +22,16 @@ class BookController extends Controller
 
     public function store(StoreBookRequest $request): JsonResponse
     {
-        $book = Book::create($request->validated());
+        if ($book = Book::create($request->validated())) {
+            return response()->json([
+                'message' => 'Book created successfully',
+                'book' => $book
+            ], 201);
+        }
 
         return response()->json([
-            'message' => 'Book created successfully',
-            'book' => $book
-        ], 201);
+            'message' => 'Book not created'
+        ], 400);
     }
 
     public function update(UpdateBookRequest $request, Book $book): JsonResponse
